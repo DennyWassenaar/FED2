@@ -1,5 +1,5 @@
 var User = {
-    name: ' Bob',
+    name: "Bob",
     speak: function () {
         console.log("Hallo, mijn naam is " + this.name + "");
     },

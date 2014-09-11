@@ -1,12 +1,10 @@
-function persoon(name, speak) {
-    this.name = naam; 
-    this.speak = praten;
-
-    function speak(speak) {
-        this.speak = name;
-    }
+function Person(name) {
+    //Property
+     this.name = name;
+    //Method
+    this.speak = function () {
+        console.log("Hallo, mijn naam is "+ this.name +"");
+    }	
 }
-
-var Bob = new person("Bob");
-
-console.log(Bob);
+var User = new Person("Bob");
+User.speak();

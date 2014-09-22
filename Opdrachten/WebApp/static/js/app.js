@@ -32,8 +32,11 @@
     WebApp.sections = {
         init: function () {
             console.log("geinitieerd");
+            this.about();
+            this.movies();
         },
         about: function () {
+            
             console.log("about");
         },
         movies: function () {
@@ -43,8 +46,9 @@
     }
 
     WebApp.controller = {
-        //method
+        //method Roep in de 'init'-methode van het 'controller'-object, de 'init'-methode van het 'sections'-object aan
         init: function () {
+            WebApp.sections.init();
             routie({
                 "about": function () {
                     WebApp.sections.about();
@@ -56,7 +60,5 @@
             console.log("draait");
         }
     };
-    //WebApp.controller.test();
-
     WebApp.controller.init();
 })();

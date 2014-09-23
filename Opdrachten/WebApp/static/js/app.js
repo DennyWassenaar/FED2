@@ -31,12 +31,11 @@ var WebApp = WebApp || {};
             "cover": "the-dark-knight.jpg"
         }]
     };
-
+    console.log(content.movies[0].title);
     WebApp.controller = {
         init: function () {
             WebApp.router.init();
             WebApp.sections.init();
-            //console.log("controller aan het werk gezet");
         }
     };
 
@@ -58,16 +57,25 @@ var WebApp = WebApp || {};
         init: function () {
             this.about();
             this.movies();
-            //console.log("sections geinitieerd");
+            //this.imgsrc();
         },
+        //imgsrc: function(){
+        //    console.log(content.movies.cover);
+        //},
         about: function () {
-            Transparency.render(document.querySelector('section[data-route="about"]'), content.about);
+            Transparency.render(document.querySelector("section[data-route='about']"), content.about);
         },
         movies: function () {
-            Transparency.render(document.querySelector('section[data-route="movies"]'), content.movies);
+            //Loopen door het object met de array aan films
+            for (i = 0; i < content.movies.length; i++) {
+                var imgSrc = ""+content.movies[i].cover
+                document.write(imgSrc + "<br >");
+            }
+            Transparency.render(document.querySelector("section[data-route='movies']"), content.movies);
         },
         toggle: function (section) {
-            document.querySelector('section[data-route="'+section+'"]').classList.toggle("active");
+            //De toggle zoals in de opdracht, beetje vaag.
+            document.querySelector("section[data-route='" + section + "']").classList.toggle("active");
         }
 
     }

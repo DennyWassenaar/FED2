@@ -1,9 +1,13 @@
+// Namespace om het object WebApp aan te maken en ervoor te zorgen dat meerdere objecten hierop in kunnen haken.
+var WebApp = WebApp || {};
+
+// Self invoking anonymous function, ervoor zorgen dat er geen conflicten ontstaan met andere scripts/libraries.
 (function () {
 
     var content = {
         about: {
-            titel: "About this app",
-            description: "blabla bla"
+            title: "About this app",
+            description: "Cities fall but they are rebuilt. heroes die but they are remembered. the man likes to play chess; let's get him some rocks. circumstances have taught me that a man's ethics are the only possessions he will take beyond the grave. multiply your anger by about a hundred, kate, that's how much he thinks he loves you. bruce... i'm god. multiply your anger by about a hundred, kate, that's how much he thinks he loves you. no, this is mount everest. you should flip on the discovery channel from time to time. but i guess you can't now, being dead and all. rehabilitated? well, now let me see. you know, i don't have any idea what that means. mister wayne, if you don't want to tell me exactly what you're doing, when i'm asked, i don't have to lie. but don't think of me as an idiot. rehabilitated? well, now let me see. you know, i don't have any idea what that means. cities fall but they are rebuilt. heroes die but they are remembered. no, this is mount everest. you should flip on the discovery channel from time to time. but i guess you can't now, being dead and all."
         },
         movies: [{
             "title": "Shawshank Redemption",
@@ -27,38 +31,45 @@
             "cover": "the-dark-knight.jpg"
         }]
     };
-    var WebApp = WebApp || {};
 
+    WebApp.controller = {
+        init: function () {
+            WebApp.router.init();
+            WebApp.sections.init();
+            //console.log("controller aan het werk gezet");
+        }
+    };
+
+    WebApp.router = {
+        init: function () {
+            routie({
+                "about": function () {
+                    console.log("about");
+                    WebApp.sections.toggle("about");
+                },
+                "movies": function () {
+                    console.log("movies");
+                    WebApp.sections.toggle("movies");
+                }
+            });
+        }
+    }
     WebApp.sections = {
         init: function () {
-            console.log("geinitieerd");
             this.about();
             this.movies();
+            //console.log("sections geinitieerd");
         },
         about: function () {
-            
-            console.log("about");
+            Transparency.render(document.querySelector('section[data-route="about"]'), content.about);
         },
         movies: function () {
-            console.log("movies");
+            Transparency.render(document.querySelector('section[data-route="movies"]'), content.movies);
+        },
+        toggle: function (section) {
+            document.querySelector('section[data-route="'+section+'"]').classList.toggle("active");
         }
 
     }
-
-    WebApp.controller = {
-        //method Roep in de 'init'-methode van het 'controller'-object, de 'init'-methode van het 'sections'-object aan
-        init: function () {
-            WebApp.sections.init();
-            routie({
-                "about": function () {
-                    WebApp.sections.about();
-                },
-                "movies": function () {
-                    WebApp.sections.movies();
-                }
-            });
-            console.log("draait");
-        }
-    };
     WebApp.controller.init();
 })();

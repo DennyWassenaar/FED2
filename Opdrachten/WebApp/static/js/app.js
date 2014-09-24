@@ -4,6 +4,7 @@ var WebApp = WebApp || {};
 // Self invoking anonymous function, ervoor zorgen dat er geen conflicten ontstaan met andere scripts/libraries.
 (function () {
 
+    // Statische object met daarin een array met content
     var content = {
         about: {
             title: "About this app",
@@ -13,32 +14,41 @@ var WebApp = WebApp || {};
             "title": "Shawshank Redemption",
             "releaseDate": "14 October 1994",
             "description": "Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency.",
-            "cover": "shawshank-redemption.jpg"
+            "cover": "images/shawshank-redemption.jpg"
         }, {
             "title": "The Godfather",
             "releaseDate": "24 March 1972",
             "description": "The aging patriarch of an organized crime dynasty transfers control of his clandestine empire to his reluctant son.",
-            "cover": "the-godfather.jpg"
+            "cover": "images/the-godfather.jpg"
         }, {
             "title": "Pulp Fiction",
             "releaseDate": "14 October 1994",
             "description": "The lives of two mob hit men, a boxer, a gangster's wife, and a pair of diner bandits intertwine in four tales of violence and redemption.",
-            "cover": "pulp-fiction.jpg"
+            "cover": "images/pulp-fiction.jpg"
         }, {
             "title": "The Dark Knight",
             "releaseDate": "18 July 2008",
             "description": "When Batman, Gordon and Harvey Dent launch an assault on the mob, they let the clown out of the box, the Joker, bent on turning Gotham on itself and bringing any heroes down to his level.",
-            "cover": "the-dark-knight.jpg"
-        }]
+            "cover": "images/the-dark-knight.jpg"
+        }],
+          // dit zorgt ervoor dat de src van img tag veranderd naar wat er staat in this.cover
+            directives: {
+                movies: {
+                    cover1: {
+                        src: function () {  return this.cover;}
+                    }
+                }
+            }
+        
     };
-    console.log(content.movies[0].title);
+    // Controller object
     WebApp.controller = {
         init: function () {
             WebApp.router.init();
             WebApp.sections.init();
         }
     };
-
+    // Router object
     WebApp.router = {
         init: function () {
             routie({
@@ -53,31 +63,33 @@ var WebApp = WebApp || {};
             });
         }
     }
+    // Sections object
     WebApp.sections = {
         init: function () {
             this.about();
             this.movies();
-            //this.imgsrc();
         },
-        //imgsrc: function(){
-        //    console.log(content.movies.cover);
-        //},
+        // About render template
         about: function () {
             Transparency.render(document.querySelector("section[data-route='about']"), content.about);
         },
+        // Movies render template
         movies: function () {
-            //Loopen door het object met de array aan films
-            for (i = 0; i < content.movies.length; i++) {
-                var imgSrc = ""+content.movies[i].cover
-                document.write(imgSrc + "<br >");
-            }
-            Transparency.render(document.querySelector("section[data-route='movies']"), content.movies);
+//            var moviesHtml = {
+//                    //'h1': "Favorite Movies",
+//                    'movies': content.movies
+//                }
+//            console.log(moviesHtml);
+            Transparency.render(document.querySelector("section[data-route='movies']"), content.movies, content.directives);
+            console.log(content.directives);
         },
+        // Toggle functie tussen de content
         toggle: function (section) {
             //De toggle zoals in de opdracht, beetje vaag.
             document.querySelector("section[data-route='" + section + "']").classList.toggle("active");
         }
 
     }
+    // Start de hele zooi
     WebApp.controller.init();
 })();

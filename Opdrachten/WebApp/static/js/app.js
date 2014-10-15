@@ -1,10 +1,11 @@
 // Namespace om het object WebApp aan te maken en ervoor te zorgen dat meerdere objecten hierop in kunnen haken.
 var WebApp = WebApp || {};
 
+
 // Self invoking anonymous function, ervoor zorgen dat er geen conflicten ontstaan met andere scripts/libraries.
 (function () {
 
-    // Statische object met daarin een array met content
+    // Statisch object met daarin een array met content
     var content = {
         about: {
             title: "About this app",
@@ -30,24 +31,51 @@ var WebApp = WebApp || {};
             "releaseDate": "18 July 2008",
             "description": "When Batman, Gordon and Harvey Dent launch an assault on the mob, they let the clown out of the box, the Joker, bent on turning Gotham on itself and bringing any heroes down to his level.",
             "cover": "images/the-dark-knight.jpg"
-        }],
-          // dit zorgt ervoor dat de src van img tag veranderd naar wat er staat in this.cover
-            directives: {
-                movies: {
-                    cover1: {
-                        src: function () {  return this.cover;}
+        }]
+    };
+    // Het XHR object
+    WebApp.xhr = {
+        trigger: function (type, url, success, data) {
+            var req = new XMLHttpRequest;
+            req.open(type, url, true);
+
+            req.setRequestHeader("Content-type", "application/json");
+
+            if (type === "POST") {
+                req.send(data);
+            } else {
+                req.send(null);
+            }
+            req.onreadystatechange = function () {
+                if (req.readyState === 4) {
+                    if (req.status === 200 || req.status === 201) {
+                        success(req.responseText);
                     }
                 }
             }
-        
+        }
     };
     // Controller object
     WebApp.controller = {
         init: function () {
+            WebApp.contents.init();
             WebApp.router.init();
             WebApp.sections.init();
         }
     };
+    // Content object
+    WebApp.contents = {
+        init: function () {
+            this.content();
+        },
+        content: function () {
+            WebApp.xhr.trigger("get", "http://dennistel.nl/movies", function (response) {
+                var parsedData = JSON.parse(response);
+                return parsedData;
+            });
+        }
+    };
+    //console.log(WebApp.contents.content());
     // Router object
     WebApp.router = {
         init: function () {
@@ -62,7 +90,7 @@ var WebApp = WebApp || {};
                 }
             });
         }
-    }
+    };
     // Sections object
     WebApp.sections = {
         init: function () {
@@ -75,13 +103,14 @@ var WebApp = WebApp || {};
         },
         // Movies render template
         movies: function () {
-//            var moviesHtml = {
-//                    //'h1': "Favorite Movies",
-//                    'movies': content.movies
-//                }
-//            console.log(moviesHtml);
-            Transparency.render(document.querySelector("section[data-route='movies']"), content.movies, content.directives);
-            console.log(content.directives);
+            var imageSrc = {
+                cover: {
+                    src: function () {
+                        return this.cover;
+                    }
+                }
+            }
+            Transparency.render(document.querySelector("section[data-route='movies']"), content.movies, imageSrc);
         },
         // Toggle functie tussen de content
         toggle: function (section) {
@@ -89,7 +118,7 @@ var WebApp = WebApp || {};
             document.querySelector("section[data-route='" + section + "']").classList.toggle("active");
         }
 
-    }
+    };
     // Start de hele zooi
     WebApp.controller.init();
 })();

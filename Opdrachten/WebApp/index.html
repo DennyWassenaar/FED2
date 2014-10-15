@@ -17,9 +17,53 @@
                 <p id="description"></p>
             </header>
         </section>
-        <section data-route="movies">
-            <div id="title"></div>
-            <div id="plot"></div>
+        <section id="movies" data-route="movies">
+            <h1 data-name="title"></h1>
+            <div id="genres">
+                <a href="#movies">Alle</a>
+                <div class="genreCollection">
+                    <a href="#movies/genre/" data-name="genre"></a>
+                </div>
+            </div>
+            <div class="movieCollection">
+                <article>
+                    <header>
+                        <h1 data-name="title"></h1>
+                        <em data-name="titleReleaseDate"><time data-name="releaseDate"></time></em>
+                    </header>
+                    <figure>
+                        <img data-name="cover">
+                    </figure>
+                    <p data-name="description"></p>
+                </article>
+            </div>
+        </section>
+        <section data-route="movie">
+            <article>
+                <header>
+                    <h1 data-name="title"></h1>
+                    <em>Release date: <time data-name="release_date"></time></em>
+                </header>
+                <figure>
+                    <img src="" alt="" data-name="cover">
+                </figure>
+                <p data-name="plot"></p>
+                <section id="actors">
+                    <h1>Actors</h1>
+                    <div data-name="actors">
+                        <article>
+                            <figure>
+                                <img src="" alt="" data-name="url_photo">
+                            </figure>
+                            <header>
+                                <a href="" data-name="url_character"><h1 data-name="character"></h1></a>
+                                Actor name: <a href="" data-name="url_profile"><h2 data-name="actor_name"></h2></a>
+                            </header>
+                        </article>
+                        <div class="clear"></div>
+                    </div>
+                </section>
+            </article>
         </section>
     </main>
     <header>

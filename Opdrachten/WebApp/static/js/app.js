@@ -58,24 +58,11 @@ var WebApp = WebApp || {};
     // Controller object
     WebApp.controller = {
         init: function () {
-            WebApp.contents.init();
+            //WebApp.contents.init();
             WebApp.router.init();
             WebApp.sections.init();
         }
     };
-    // Content object
-    WebApp.contents = {
-        init: function () {
-            this.content();
-        },
-        content: function () {
-            WebApp.xhr.trigger("get", "http://dennistel.nl/movies", function (response) {
-                var parsedData = JSON.parse(response);
-                return parsedData;
-            });
-        }
-    };
-    //console.log(WebApp.contents.content());
     // Router object
     WebApp.router = {
         init: function () {
@@ -95,22 +82,28 @@ var WebApp = WebApp || {};
     WebApp.sections = {
         init: function () {
             this.about();
-            this.movies();
+            this.getMovies();
         },
         // About render template
         about: function () {
             Transparency.render(document.querySelector("section[data-route='about']"), content.about);
         },
         // Movies render template
-        movies: function () {
+        getMovies: function () {
+            WebApp.xhr.trigger("GET", "http://dennistel.nl/movies", this.moviesSucces);
+        },
+        moviesSucces: function (response) {
+            var movies = JSON.parse(response);
+            console.log(movies);
+            // Directives
             var imageSrc = {
                 cover: {
                     src: function () {
                         return this.cover;
                     }
                 }
-            }
-            Transparency.render(document.querySelector("section[data-route='movies']"), content.movies, imageSrc);
+            };
+            Transparency.render(document.querySelector("section[data-route='movies']"), movies);
         },
         // Toggle functie tussen de content
         toggle: function (section) {

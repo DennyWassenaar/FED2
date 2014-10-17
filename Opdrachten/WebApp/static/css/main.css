@@ -1,5 +1,28 @@
 body{ background:#fff; color:#fff; margin:0; padding:25px;}
 *{ margin:0; padding:0;}
+ul{ list-style: none;}
+a{ text-decoration: none;}
+
+
 #content{ background:#328eff; border:1px #000 solid; border-radius: 10px; box-shadow: 10px 10px 25px #000; padding: 15px;}
-section{ display: none;}
-section.active{ display: block;}
+main{ margin: 0 0 25px 0;}
+main > header{ position: fixed; bottom: 0; left: 0; width: 100%; z-index: 999;}
+main > header nav{ width: 100%;}
+main > header nav ul{ display: flex; width: 100%; box-shadow: 3px 3px 10px #000;}
+main > header nav ul li{ width: 50%;}
+main > header nav ul li a{ display: block; text-align: center; font-size:130%; color: #fff; background: #328eff; border:1px #000 solid; padding: 10px;}
+main > header nav ul li a:hover{ }
+
+main section{ display: none; }
+main section.active{ display: flex;}
+main section.active article{ position: relative; border:1px #000 solid; border-radius: 10px; margin: 3px; padding: 10px;}
+main section.active article h1{ position: relative; z-index: 998;}
+main section.active article em{ position: relative; z-index: 998;}
+main section.active article p{ position: relative; z-index: 998;}
+main section.active article img{ position: absolute; top:0; left:0; z-index: 997;}
+
+@media all and (max-width: 600px) {
+    main > header nav ul{ flex-flow: column;}
+    main > header nav ul li{ width: 100%;}
+    main > header nav ul li a{ }
+}

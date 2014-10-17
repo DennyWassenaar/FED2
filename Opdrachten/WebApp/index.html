@@ -3,40 +3,37 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="description" content="Web App V1, basic JavaScript Skeleton">
+    <meta name="description" content="Beetje bier enzo">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>My Favorite Movies</title>
+    <title>Denny's film center</title>
     <link rel="stylesheet" href="static/css/main.css">
 </head>
 
 <body>
     <main id="content">
+        <header>
+            <nav>
+                <ul>
+                    <li><a href="#about">About</a>
+                    </li>
+                    <li><a href="#movies">Movies</a>
+                    </li>
+                </ul>
+            </nav>
+        </header>
         <section data-route="about">
-            <header>
-                <h1 id="title"></h1>
-                <p id="description"></p>
-            </header>
+            <h1 data-bind="title"></h1>
+            <p data-bind="description"></p>
         </section>
         <section data-route="movies">
             <article>
-                <header>
-                    <h1 class="title"></h1>
-                    <em>Release date: <time class="release_date"></time></em>
-                    <p class="plot"></p>
-                </header>
+                <h1 data-bind="title"></h1>
+                <em>Release date: <time data-bind="release_date"></time></em>
+                <p data-bind="plot"></p>
+                <img src="" alt="" data-bind="bg">
             </article>
         </section>
     </main>
-    <header>
-        <nav>
-            <ul>
-                <li><a href="#about">About</a>
-                </li>
-                <li><a href="#movies">Movies</a>
-                </li>
-            </ul>
-        </nav>
-    </header>
     <script src="static/js/vendor/transparency.min.js"></script>
     <script src="static/js/vendor/routie.min.js"></script>
     <script src="static/js/app.js"></script>

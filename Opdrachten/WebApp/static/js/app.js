@@ -1,7 +1,11 @@
 // Namespace om het object WebApp aan te maken en ervoor te zorgen dat meerdere objecten hierop in kunnen haken.
 var WebApp = WebApp || {};
-
-
+var content = {
+    about: {
+        titel: "About this app",
+        description: "blabla bla"
+    }
+};
 // Self invoking anonymous function, ervoor zorgen dat er geen conflicten ontstaan met andere scripts/libraries.
 (function () {
     // Het XHR object
@@ -52,6 +56,7 @@ var WebApp = WebApp || {};
         init: function () {
             this.about();
             this.getMovies();
+            this.renderMovies();
         },
         // About render template
         about: function () {
@@ -59,12 +64,18 @@ var WebApp = WebApp || {};
         },
         // Movies object ophalen van externe locatie en dit doorpaasen aan de succes functie
         getMovies: function () {
-            WebApp.xhr.trigger("GET", "http://dennistel.nl/movies", this.renderMovies);
+            WebApp.xhr.trigger("GET", "http://dennistel.nl/movies", this.setMoviesLocal);
+        },
+        setMoviesLocal: function (movies) {
+            if (localStorage.getItem("movies") === null) {
+                localStorage.setItem("movies", movies);
+            }else{
+                localStorage.getItem("movies");
+            }
         },
         // Movies render template
-        renderMovies: function (response) {
-            var movies = JSON.parse(response);
-            //console.log(movies);
+        renderMovies: function () {
+            var moviesLocal = localStorage.getItem("movies");
             // De template engine aansturen met wat waar moet en andere eigenschappen.
             var directives = {
                 bg: {
@@ -75,18 +86,18 @@ var WebApp = WebApp || {};
                         return this.title;
                     }
                 },
-                plot: {
+                genres: {
                     text: function () {
-                        if (this.plot > 25) {
-                            var smallText = this.plot.substr(0, 50 - 3) + "...";
-                            return smallText;
-                        }
-                        //var smallText = this.
-                        //return this.plot;
+                        return this.genres;
+                    }
+                },
+                directors: {
+                    text: function () {
+                        //return this.directors[name];
                     }
                 }
             };
-            Transparency.render(document.querySelector("section[data-route='movies']"), movies, directives);
+            Transparency.render(document.querySelector("section[data-route='movies']"), JSON.parse(moviesLocal), directives);
         },
         // Toggle functie tussen de content
         toggle: function (section) {

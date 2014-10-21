@@ -28,14 +28,18 @@
         <section data-route="movies">
             <article>
                 <h1 data-bind="title"></h1>
+                <p data-bind="simple_plot"></p>
                 <em>Release date: <time data-bind="release_date"></time></em>
-                <p data-bind="plot"></p>
                 <img src="" alt="" data-bind="bg">
+                <p data-bind="genres"></p>
+                <p data-bind="directors"></p>
+                <p data-bind="plot"></p>
             </article>
         </section>
     </main>
     <script src="static/js/vendor/transparency.min.js"></script>
     <script src="static/js/vendor/routie.min.js"></script>
+    <script src="static/js/vendor/underscore.min.js"></script>
     <script src="static/js/app.js"></script>
 </body>
 

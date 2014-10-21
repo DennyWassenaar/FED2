@@ -15,10 +15,11 @@ main > header nav ul li a:hover{ }
 
 main section{ display: none; }
 main section.active{ display: flex;}
-main section.active article{ position: relative; border:1px #000 solid; border-radius: 10px; margin: 3px; padding: 10px;}
+main section.active article{ position: relative; overflow: hidden; width: 40%; border:1px #000 solid; border-radius: 10px; margin: 3px; padding: 10px;}
 main section.active article h1{ position: relative; z-index: 998;}
 main section.active article em{ position: relative; z-index: 998;}
 main section.active article p{ position: relative; z-index: 998;}
+main section.active article p[data-bind="plot"]{ display:none;}
 main section.active article img{ position: absolute; top:0; left:0; z-index: 997;}
 
 @media all and (max-width: 600px) {

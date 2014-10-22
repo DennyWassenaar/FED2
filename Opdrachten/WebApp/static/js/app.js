@@ -47,6 +47,12 @@ var content = {
                 "movies": function () {
                     console.log("movies");
                     WebApp.sections.toggle("movies");
+                },
+                "*": function () {
+                    console.log("je moeder");
+                },
+                "movies/:id": function (id) {
+                    console.log("test");
                 }
             });
         }
@@ -69,7 +75,7 @@ var content = {
         setMoviesLocal: function (movies) {
             if (localStorage.getItem("movies") === null) {
                 localStorage.setItem("movies", movies);
-            }else{
+            } else {
                 localStorage.getItem("movies");
             }
         },
@@ -93,7 +99,17 @@ var content = {
                 },
                 directors: {
                     text: function () {
-                        //return this.directors[name];
+                        // Hier loopen door de directors van de film
+                        for (i = 0; i < this.directors.length; i++) {
+                            return this.directors[i].name;
+                        }
+                    }
+                },
+                actors: {
+                    text: function () {
+                        for (i = 0; i < this.actors.length; i++) {
+                            return this.actors[i].actor_name;
+                        }
                     }
                 }
             };

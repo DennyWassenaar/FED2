@@ -2,8 +2,8 @@
 var WebApp = WebApp || {};
 var content = {
     about: {
-        titel: "About this app",
-        description: "blabla bla"
+        titel: "Ik vind helemaal mooi",
+        description: "100 eero voor die bliekje in die water, IK VIND HELEMAAAAL MOOI!!!"
     }
 };
 var movieAPI = "http://dennistel.nl/movies";
@@ -51,20 +51,20 @@ var movieAPI = "http://dennistel.nl/movies";
                 },
                 "movies/genre/?:genre": function (genre) {
                     console.log("gesorteerd op genre")
-                    WebApp.sections.toggle(localStorage.getItem("movies"), genre);
+                    WebApp.sections.renderMovies(genre);
                 },
                 "movies/rating/?:order": function (order) {
                     console.log("gesorteerd op review (rating)")
-                    app.sections.movies(localStorage.getItem("movies"), order);
+                    WebApp.sections.renderMovies(order);
                 },
                 "movies/date/?:order": function (order) {
                     console.log("gesorteerd op datum")
-                    app.sections.movies(localStorage.getItem("movies"), order);
+                    WebApp.sections.renderMovies(order);
                 },
                 "movie/:movieTitle": function (movieTitle) {
                     console.log("gesorteerd op film titel")
-                    app.sections.toggle("movie-detail");
-                    app.sections.detail(localStorage.getItem("movies"), movieTitle);
+                    WebApp.sections.toggle("movie-detail");
+                    WebApp.sections.renderMovieDetail(movieTitle);
                 },
                 "*": function () {
                     console.log("in case everything fails :)");
@@ -79,7 +79,6 @@ var movieAPI = "http://dennistel.nl/movies";
             this.renderAbout();
             this.getMovies();
             this.renderMovies();
-            this.filterMovies();
         },
         // About render template
         renderAbout: function () {
@@ -94,37 +93,53 @@ var movieAPI = "http://dennistel.nl/movies";
             localStorage.setItem("movies", movies);
             //}
         },
-        filterMovies: function () {
-            var movies = JSON.parse(localStorage.getItem("movies"));
-            /* _.map(movies, function (movie, i) {
-                movie.reviews = _.reduce(movie.reviews, function (memo, review) {
-                    return memo + review.score;
-                }, 0) / movie.reviews.length;
-            });
-            _.filter(movies, function(movie, i){
-                console.log(movie.genres);
-            });*/
-            _.filter(
-                _.map(movies, function (movie, i) {
-                    movie.reviews = _.reduce(movie.reviews, function (memo, review) {
-                        return memo + review.score;
-                    }, 0) / movie.reviews.length;
-                    movie.directors = _.reduce(movie.directors, function (memo, director) {
-                        return memo + director.name + ' ';
-                    }, '');
-                    movie.actors = _.reduce(movie.actors, function (memo, actor) {
-                        return memo + actor.actor_name + ', ';
-                    }, '');
-                    return movies;
-                }),
-                function (movie) {
-                    return _.contains(movie.genres, 'Drama');
-                });
-            localStorage.setItem("movies", JSON.stringify(movies));
-        },
         // Movies render template
-        renderMovies: function () {
+        renderMovies: function (filter) {
             var movies = JSON.parse(localStorage.getItem("movies"));
+            _.map(movies, function (movie) {
+                movie.reviews = _.reduce(movie.reviews, function (totalScore, review) {
+                    return totalScore + review.score;
+                }, 0) / _.size(movie.reviews);
+            });
+            switch (filter) {
+            case "all":
+                app.sections.toggle("movie-detail");
+                break;
+            case "horror":
+            case "crime":
+            case "drama":
+            case "thriller":
+            case "action":
+            case "adventure":
+                movies = _.filter(movies, function (movie) {
+                    filter = filter.charAt(0).toUpperCase() + filter.slice(1);
+                    return (_.contains(movie.genres, filter) === true);
+                });
+                break;
+            case "asc":
+                movies = _.sortBy(movies, function (movie) {
+                    return movie.reviews;
+                });
+                break;
+            case "desc":
+                movies = _.sortBy(movies, function (movie) {
+                    return movie.reviews * -1;
+                });
+                break;
+            case "date-asc":
+                movies = _.sortBy(movies, function (movie) {
+                    return Date.parse(movie.release_date);
+                });
+                break;
+            case "date-desc":
+                movies = _.sortBy(movies, function (movie) {
+                    return Date.parse(movie.release_date) * -1;
+                });
+                break;
+            default:
+                // No valid filter
+                break;
+            };
             // De template engine aansturen met wat waar moet en andere eigenschappen.
             var directives = {
                 bg: {
@@ -139,29 +154,44 @@ var movieAPI = "http://dennistel.nl/movies";
                     text: function () {
                         return this.genres;
                     }
+                },
+                reviews: {
+                    text: function () {
+                        if (isNaN(this.reviews)) {
+                            return 'No score available';
+                        } else {
+                            return this.reviews;
+                        }
+                    }
+                },
+                link: {
+                    href: function (params) {
+                        var title = this.title.replace(/\s+/g, '-').toLowerCase();
+                        return '#movie/' + title;
+                    }
                 }
             };
             Transparency.render(document.querySelector("section[data-route='movies']"), movies, directives);
         },
-        detail: function (obj, movieTitle) { // Detail page section
-            var obj = JSON.parse(obj);
-            _.map(obj, function (movie) { // Use underscore.js to map each value in a list..
-                movie.reviews = _.reduce(movie.reviews, function (totalScore, review) { // .. then combine those values..
+        renderMovieDetail: function (movieTitle) {
+            var movies = JSON.parse(localStorage.getItem("movies"));
+            _.map(movies, function (movie) {
+                movie.reviews = _.reduce(movie.reviews, function (totalScore, review) {
                     return totalScore + review.score;
-                }, 0) / _.size(movie.reviews); // .. and divide by total reviews to get the average review score.
+                }, 0) / _.size(movie.reviews);
             });
-            _.map(obj, function (movie) {
-                movie.genres = movie.genres.toString(); // Transforms the genre array to a string
+            _.map(movies, function (movie) {
+                movie.genres = movie.genres.toString();
             });
             var title = movieTitle;
-            title = title.replace(/-/g, ' '); // Replaces the dashes with spaces
-            title = title.replace(/\b./g, function (m) { // Capitalize each word
+            title = title.replace(/-/g, ' ');
+            title = title.replace(/\b./g, function (m) {
                 return m.toUpperCase();
             });
-            obj = _.filter(obj, function (movie) { // Filters the obj..
-                return movie.title === title; // .. and shows only movies with matching title.
+            movies = _.filter(movies, function (movie) {
+                return movie.title === title;
             });
-            Transparency.render(document.getElementById('detail'), obj, app.content.directives); // Displays the element with ID 'detail' with the content from 'obj'.
+            Transparency.render(document.querySelector("section[data-route='movie-detail']"), movies);
         },
         // Toggle functie om te schakelen tussen de content.
         toggle: function (section) {

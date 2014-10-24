@@ -41,6 +41,22 @@
                 <p data-bind="plot"></p>
             </article>
         </section>
+        <section data-route="movie-detail">
+            <article>
+                <h1 data-bind="title"></h1>
+                <p data-bind="simple_plot"></p>
+                <em>Release date: <time data-bind="release_date"></time></em>
+                <img src="" alt="" data-bind="bg">
+                <p data-bind="genres"></p>
+                <p data-bind="directors"><span data-bind="name"></span>
+                </p>
+                <p data-bind="actors"><span data-bind="actor_name"></span>
+                </p>
+                <p data-bind="reviews">
+                </p>
+                <p data-bind="plot"></p>
+            </article>
+        </section>
     </main>
     <script src="static/js/vendor/transparency.min.js"></script>
     <script src="static/js/vendor/routie.min.js"></script>

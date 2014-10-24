@@ -6,6 +6,7 @@ var content = {
         description: "blabla bla"
     }
 };
+var movieAPI = "http://dennistel.nl/movies";
 // Self invoking anonymous function, ervoor zorgen dat er geen conflicten ontstaan met andere scripts/libraries.
 (function () {
     // Het XHR object
@@ -48,11 +49,26 @@ var content = {
                     console.log("movies");
                     WebApp.sections.toggle("movies");
                 },
-                "*": function () {
-                    console.log("je moeder");
+                "movies/genre/?:genre": function (genre) {
+                    console.log("gesorteerd op genre")
+                    WebApp.sections.toggle(localStorage.getItem("movies"), genre);
                 },
-                "movies/:id": function (id) {
-                    console.log("test");
+                "movies/rating/?:order": function (order) {
+                    console.log("gesorteerd op review (rating)")
+                    app.sections.movies(localStorage.getItem("movies"), order);
+                },
+                "movies/date/?:order": function (order) {
+                    console.log("gesorteerd op datum")
+                    app.sections.movies(localStorage.getItem("movies"), order);
+                },
+                "movie/:movieTitle": function (movieTitle) {
+                    console.log("gesorteerd op film titel")
+                    app.sections.toggle("movie-detail");
+                    app.sections.detail(localStorage.getItem("movies"), movieTitle);
+                },
+                "*": function () {
+                    console.log("in case everything fails :)");
+                    WebApp.sections.toggle("movies");
                 }
             });
         }
@@ -60,28 +76,55 @@ var content = {
     // Sections object
     WebApp.sections = {
         init: function () {
-            this.about();
+            this.renderAbout();
             this.getMovies();
             this.renderMovies();
+            this.filterMovies();
         },
         // About render template
-        about: function () {
+        renderAbout: function () {
             Transparency.render(document.querySelector("section[data-route='about']"), content.about);
         },
         // Movies object ophalen van externe locatie en dit doorpaasen aan de succes functie
         getMovies: function () {
-            WebApp.xhr.trigger("GET", "http://dennistel.nl/movies", this.setMoviesLocal);
+            WebApp.xhr.trigger("GET", movieAPI, this.setMoviesLocal);
         },
         setMoviesLocal: function (movies) {
-            if (localStorage.getItem("movies") === null) {
-                localStorage.setItem("movies", movies);
-            } else {
-                localStorage.getItem("movies");
-            }
+            //if (localStorage.getItem("movies") === null) {
+            localStorage.setItem("movies", movies);
+            //}
+        },
+        filterMovies: function () {
+            var movies = JSON.parse(localStorage.getItem("movies"));
+            /* _.map(movies, function (movie, i) {
+                movie.reviews = _.reduce(movie.reviews, function (memo, review) {
+                    return memo + review.score;
+                }, 0) / movie.reviews.length;
+            });
+            _.filter(movies, function(movie, i){
+                console.log(movie.genres);
+            });*/
+            _.filter(
+                _.map(movies, function (movie, i) {
+                    movie.reviews = _.reduce(movie.reviews, function (memo, review) {
+                        return memo + review.score;
+                    }, 0) / movie.reviews.length;
+                    movie.directors = _.reduce(movie.directors, function (memo, director) {
+                        return memo + director.name + ' ';
+                    }, '');
+                    movie.actors = _.reduce(movie.actors, function (memo, actor) {
+                        return memo + actor.actor_name + ', ';
+                    }, '');
+                    return movies;
+                }),
+                function (movie) {
+                    return _.contains(movie.genres, 'Drama');
+                });
+            localStorage.setItem("movies", JSON.stringify(movies));
         },
         // Movies render template
         renderMovies: function () {
-            var moviesLocal = localStorage.getItem("movies");
+            var movies = JSON.parse(localStorage.getItem("movies"));
             // De template engine aansturen met wat waar moet en andere eigenschappen.
             var directives = {
                 bg: {
@@ -96,29 +139,40 @@ var content = {
                     text: function () {
                         return this.genres;
                     }
-                },
-                directors: {
-                    text: function () {
-                        // Hier loopen door de directors van de film
-                        for (i = 0; i < this.directors.length; i++) {
-                            return this.directors[i].name;
-                        }
-                    }
-                },
-                actors: {
-                    text: function () {
-                        for (i = 0; i < this.actors.length; i++) {
-                            return this.actors[i].actor_name;
-                        }
-                    }
                 }
             };
-            Transparency.render(document.querySelector("section[data-route='movies']"), JSON.parse(moviesLocal), directives);
+            Transparency.render(document.querySelector("section[data-route='movies']"), movies, directives);
         },
-        // Toggle functie tussen de content
+        detail: function (obj, movieTitle) { // Detail page section
+            var obj = JSON.parse(obj);
+            _.map(obj, function (movie) { // Use underscore.js to map each value in a list..
+                movie.reviews = _.reduce(movie.reviews, function (totalScore, review) { // .. then combine those values..
+                    return totalScore + review.score;
+                }, 0) / _.size(movie.reviews); // .. and divide by total reviews to get the average review score.
+            });
+            _.map(obj, function (movie) {
+                movie.genres = movie.genres.toString(); // Transforms the genre array to a string
+            });
+            var title = movieTitle;
+            title = title.replace(/-/g, ' '); // Replaces the dashes with spaces
+            title = title.replace(/\b./g, function (m) { // Capitalize each word
+                return m.toUpperCase();
+            });
+            obj = _.filter(obj, function (movie) { // Filters the obj..
+                return movie.title === title; // .. and shows only movies with matching title.
+            });
+            Transparency.render(document.getElementById('detail'), obj, app.content.directives); // Displays the element with ID 'detail' with the content from 'obj'.
+        },
+        // Toggle functie om te schakelen tussen de content.
         toggle: function (section) {
-            //De toggle zoals in de opdracht, beetje vaag.
-            document.querySelector("section[data-route='" + section + "']").classList.toggle("active");
+            // Selecteer alle sections
+            var activeSections = document.querySelectorAll("section");
+            // Loop door de sections en verwijder de class active.
+            for (var i = 0; i < activeSections.length; i++) {
+                activeSections[i].classList.remove("active");
+            }
+            // Voeg de class active toe aan het element dat de gebruiker wil zien.
+            document.querySelector("section[data-route='" + section + "']").classList.add("active");
         }
 
     };

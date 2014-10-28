@@ -3,7 +3,7 @@ var WebApp = WebApp || {};
 var content = {
     about: {
         title: "About",
-        description: "test test"
+        description: "Bij Denny's bioscoop worden uiteraard de laatste films vertoond. Maar om de filmbeleving nog groter te maken, organiseren we ook events (o.a. Ladies Night, PAC Festival, 50 Plus Bios en High Tea) en vertonen we live registraties (o.a. opera, theater of sportwedstrijden). Ook bieden we ‘on demand’ films aan via Pathé Thuis. Verder behoren pathe.nl en Pathé Facebook tot de meest bezochte online platforms in Nederland. Kortom, Pathé is méér dan film alleen!"
     }
 };
 var movieAPI = "http://dennistel.nl/movies";
@@ -102,43 +102,43 @@ var movieAPI = "http://dennistel.nl/movies";
                 }, 0) / _.size(movie.reviews);
             });
             switch (filter) {
-            case "all":
-                WebApp.sections.toggle("movie-detail");
-                break;
-            case "horror":
-            case "crime":
-            case "drama":
-            case "thriller":
-            case "action":
-            case "adventure":
-                movies = _.filter(movies, function (movie) {
-                    filter = filter.charAt(0).toUpperCase() + filter.slice(1);
-                    return (_.contains(movie.genres, filter) === true);
-                });
-                break;
-            case "asc":
-                movies = _.sortBy(movies, function (movie) {
-                    return movie.reviews;
-                });
-                break;
-            case "desc":
-                movies = _.sortBy(movies, function (movie) {
-                    return movie.reviews * -1;
-                });
-                break;
-            case "date-asc":
-                movies = _.sortBy(movies, function (movie) {
-                    return Date.parse(movie.release_date);
-                });
-                break;
-            case "date-desc":
-                movies = _.sortBy(movies, function (movie) {
-                    return Date.parse(movie.release_date) * -1;
-                });
-                break;
-            default:
-                // No valid filter
-                break;
+                case "all":
+                    WebApp.sections.toggle("movies");
+                    break;
+                case "horror":
+                case "crime":
+                case "drama":
+                case "thriller":
+                case "action":
+                case "adventure":
+                    movies = _.filter(movies, function (movie) {
+                        filter = filter.charAt(0).toUpperCase() + filter.slice(1);
+                        return (_.contains(movie.genres, filter) === true);
+                    });
+                    break;
+                case "asc":
+                    movies = _.sortBy(movies, function (movie) {
+                        return movie.reviews;
+                    });
+                    break;
+                case "desc":
+                    movies = _.sortBy(movies, function (movie) {
+                        return movie.reviews * -1;
+                    });
+                    break;
+                case "date-asc":
+                    movies = _.sortBy(movies, function (movie) {
+                        return Date.parse(movie.release_date);
+                    });
+                    break;
+                case "date-desc":
+                    movies = _.sortBy(movies, function (movie) {
+                        return Date.parse(movie.release_date) * -1;
+                    });
+                    break;
+                default:
+                    console.log("No filter!");
+                    break;
             };
             // De template engine aansturen met wat waar moet en andere eigenschappen.
             var directives = {
@@ -148,11 +148,6 @@ var movieAPI = "http://dennistel.nl/movies";
                     },
                     alt: function () {
                         return this.title;
-                    }
-                },
-                genres: {
-                    text: function () {
-                        return this.genres;
                     }
                 },
                 reviews: {
@@ -184,9 +179,9 @@ var movieAPI = "http://dennistel.nl/movies";
                 movie.genres = movie.genres.toString();
             });
             var title = movieTitle;
-            title = title.replace(/-/g, ' ');
-            title = title.replace(/\b./g, function (m) {
-                return m.toUpperCase();
+            title = title.replace(/-/g, " ");
+            title = title.replace(/\b./g, function (title) {
+                return title.toUpperCase();
             });
             movies = _.filter(movies, function (movie) {
                 return movie.title === title;

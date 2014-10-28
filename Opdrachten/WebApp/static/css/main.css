@@ -21,10 +21,18 @@ main > header nav ul li{ width: 50%;}
 main > header nav ul li a{ display: block; text-align: center; font-size:130%; color: #fff; background: #328eff; border:1px #000 solid; padding: 10px;}
 main > header nav ul li a:hover{ }
 
+main > ul{ display: flex; justify-content: space-around; border:1px #000 solid; border-radius: 5px; margin: 10px 0;}
+main > ul li{ }
+main > ul li a{ display: block; padding: 10px 25px;}
+
 main section.active{ display: flex; flex-wrap: wrap; justify-content: space-around; height: 100%; opacity: 1; transition: height 0s, opacity 500ms ease-in;}
 main section.inactive{ overflow: hidden; height:0; opacity:0; transition: height 0s, opacity 500ms ease-out;}
-main section.active article{ position: relative; overflow: hidden; width: 29%; border:3px #000 solid; border-radius: 10px; margin: 10px 0; padding: 10px 10px 10px 230px;}
+main section.active article{ position: relative; overflow: hidden; width: 29%; border:3px #000 solid; border-radius: 10px; margin: 10px 0; padding: 10px 10px 50px 230px;}
+main section[data-bind="movie-detail"] article{ background: #000; width:100%;}
 main section.active article h1{ position: relative; font-size: 1.5em; z-index: 998;}
+main section.active article h1 time{ font-size:0.6em;}
+main section.active article h1 time:before{ content: " (";}
+main section.active article h1 time:after{ content: ")";}
 main section.active article em{ position: relative; z-index: 998;}
 main section.active article p{ position: relative; font-size:1em; z-index: 998;}
 main section.active article a{ position: absolute; bottom: 0; left: 0; display: block; text-align: center; font-size: 1.2em; width: 100%; background: #000; padding: 10px; z-index: 998;}
@@ -36,5 +44,6 @@ main section.active article img{ position: absolute; top:0; left:0; z-index: 997
     main > header nav ul li{ width: 100%;}
     main > header nav ul li a{ }
     
-    main section.active article{ width:100%;}
+    main section.active article{ width:100%; padding: 10px;}
+    main section.active article p[data-bind="simple_plot"]{ display: none;}
 }

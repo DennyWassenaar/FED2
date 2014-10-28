@@ -2,8 +2,8 @@
 var WebApp = WebApp || {};
 var content = {
     about: {
-        titel: "Ik vind helemaal mooi",
-        description: "100 eero voor die bliekje in die water, IK VIND HELEMAAAAL MOOI!!!"
+        title: "About",
+        description: "test test"
     }
 };
 var movieAPI = "http://dennistel.nl/movies";
@@ -103,7 +103,7 @@ var movieAPI = "http://dennistel.nl/movies";
             });
             switch (filter) {
             case "all":
-                app.sections.toggle("movie-detail");
+                WebApp.sections.toggle("movie-detail");
                 break;
             case "horror":
             case "crime":
@@ -158,16 +158,16 @@ var movieAPI = "http://dennistel.nl/movies";
                 reviews: {
                     text: function () {
                         if (isNaN(this.reviews)) {
-                            return 'No score available';
+                            return "No reviews available";
                         } else {
                             return this.reviews;
                         }
                     }
                 },
-                link: {
-                    href: function (params) {
-                        var title = this.title.replace(/\s+/g, '-').toLowerCase();
-                        return '#movie/' + title;
+                movie_link: {
+                    href: function () {
+                        var title = this.title.replace(/\s+/g, "-");
+                        return "#movie/" + title;
                     }
                 }
             };
@@ -191,7 +191,17 @@ var movieAPI = "http://dennistel.nl/movies";
             movies = _.filter(movies, function (movie) {
                 return movie.title === title;
             });
-            Transparency.render(document.querySelector("section[data-route='movie-detail']"), movies);
+            var directives = {
+                bg: {
+                    src: function () {
+                        return this.cover;
+                    },
+                    alt: function () {
+                        return this.title;
+                    }
+                }
+            };
+            Transparency.render(document.querySelector("section[data-route='movie-detail']"), movies, directives);
         },
         // Toggle functie om te schakelen tussen de content.
         toggle: function (section) {
@@ -199,10 +209,13 @@ var movieAPI = "http://dennistel.nl/movies";
             var activeSections = document.querySelectorAll("section");
             // Loop door de sections en verwijder de class active.
             for (var i = 0; i < activeSections.length; i++) {
+                activeSections[i].classList.add("inactive");
                 activeSections[i].classList.remove("active");
             }
             // Voeg de class active toe aan het element dat de gebruiker wil zien.
-            document.querySelector("section[data-route='" + section + "']").classList.add("active");
+            var activeElement = document.querySelector("section[data-route='" + section + "']");
+            activeElement.classList.remove("inactive");
+            activeElement.classList.add("active");
         }
 
     };

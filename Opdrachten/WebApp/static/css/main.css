@@ -1,11 +1,19 @@
-body{ background:#fff; color:#fff; margin:0; padding:25px;}
+body{ background:#eee; color:#fff; margin:0; padding:0;}
 *{ margin:0; padding:0;}
 ul{ list-style: none;}
-a{ text-decoration: none;}
+a{ text-decoration: none; color:#fff;}
 
+/*
+.loader { position: absolute; top:45%; left:45%; width:10%; z-index: 9999;}
+.loader > div { width: 30px; height: 30px; background-color: #BBB; border-radius: 100%; display: inline-block; animation: bouncedelay 1.4s infinite ease-in-out; animation-fill-mode: both;}
+.loader .ball1 {animation-delay: -0.32s;}
+.loader .ball2 {animation-delay: -0.16s;}
+@-webkit-keyframes bouncedelay { 0%, 80%, 100% { -webkit-transform: scale(0.0) } 40% { -webkit-transform: scale(1.0) }}
+@keyframes bouncedelay { 0%, 80%, 100% { transform: scale(0.0);} 40% { transform: scale(1.0);}}
+*/
 
-#content{ background:#328eff; border:1px #000 solid; border-radius: 10px; box-shadow: 10px 10px 25px #000; padding: 15px;}
-main{ margin: 0 0 25px 0;}
+main{ background:#4096EE; border:3px #000 solid; border-radius: 10px; box-shadow: 10px 10px 25px #000; padding: 15px; margin: 15px 15px 65px 25px;}
+main > h1{ font-size: 2em; text-align: center;}
 main > header{ position: fixed; bottom: 0; left: 0; width: 100%; z-index: 999;}
 main > header nav{ width: 100%;}
 main > header nav ul{ display: flex; width: 100%; box-shadow: 3px 3px 10px #000;}
@@ -13,17 +21,20 @@ main > header nav ul li{ width: 50%;}
 main > header nav ul li a{ display: block; text-align: center; font-size:130%; color: #fff; background: #328eff; border:1px #000 solid; padding: 10px;}
 main > header nav ul li a:hover{ }
 
-main section{ display: none; }
-main section.active{ display: flex;}
-main section.active article{ position: relative; overflow: hidden; width: 40%; border:1px #000 solid; border-radius: 10px; margin: 3px; padding: 10px;}
-main section.active article h1{ position: relative; z-index: 998;}
+main section.active{ display: flex; flex-wrap: wrap; justify-content: space-around; height: 100%; opacity: 1; transition: height 0s, opacity 500ms ease-in;}
+main section.inactive{ overflow: hidden; height:0; opacity:0; transition: height 0s, opacity 500ms ease-out;}
+main section.active article{ position: relative; overflow: hidden; width: 29%; border:3px #000 solid; border-radius: 10px; margin: 10px 0; padding: 10px 10px 10px 230px;}
+main section.active article h1{ position: relative; font-size: 1.5em; z-index: 998;}
 main section.active article em{ position: relative; z-index: 998;}
-main section.active article p{ position: relative; z-index: 998;}
-main section.active article p[data-bind="plot"]{ display:none;}
+main section.active article p{ position: relative; font-size:1em; z-index: 998;}
+main section.active article a{ position: absolute; bottom: 0; left: 0; display: block; text-align: center; font-size: 1.2em; width: 100%; background: #000; padding: 10px; z-index: 998;}
 main section.active article img{ position: absolute; top:0; left:0; z-index: 997;}
 
 @media all and (max-width: 600px) {
+    main{ margin:0;  border-radius: 0;}
     main > header nav ul{ flex-flow: column;}
     main > header nav ul li{ width: 100%;}
     main > header nav ul li a{ }
+    
+    main section.active article{ width:100%;}
 }

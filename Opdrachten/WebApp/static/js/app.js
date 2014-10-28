@@ -153,7 +153,7 @@ var movieAPI = "http://dennistel.nl/movies";
                 reviews: {
                     text: function () {
                         if (isNaN(this.reviews)) {
-                            return "No reviews available";
+                            return "";
                         } else {
                             return this.reviews;
                         }

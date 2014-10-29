@@ -41,7 +41,8 @@ main section.active article p[data-bind="actors"]{ display: block; margin:0 0 15
 main section.active article p span[data-bind="actor_name"]:after{ content:", "}
 main section.active article a{ position: absolute; bottom: 0; left: 0; display: block; text-align: center; font-size: 1.2em; width: 100%; background: #000; padding: 10px; z-index: 998;}
 main section.active article img{ position: absolute; top:0; left:0; z-index: 997;}
-a#filter{ position: absolute; top: 5px; left: 2px; display: block; text-indent: -9999px; background:url(../../images/menu-icon.png) no-repeat; width: 50px; height: 36px; z-index: 999;}
+
+a#filter{ display: none; position: absolute; top: 5px; left: 2px; text-indent: -9999px; background:url(../../images/menu-icon.png) no-repeat; width: 50px; height: 36px; z-index: 999;}
 
 .snap-drawers{position:absolute;top:0;right:0;bottom:0;left:0;width:auto;height:auto;}
 #menu{ display: none; position:absolute; top:0; right:auto; bottom:0; left:auto; width:265px; height:auto; overflow:auto; -webkit-overflow-scrolling: touch; -webkit-transition: width .3s ease; -moz-transition: width .3s ease; -ms-transition: width .3s ease; -o-transition: width .3s ease; transition: width .3s ease;}

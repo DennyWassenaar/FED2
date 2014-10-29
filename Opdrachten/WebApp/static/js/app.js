@@ -107,9 +107,9 @@ var movieAPI = "http://dennistel.nl/movies";
             WebApp.xhr.trigger("GET", movieAPI, this.setMoviesLocal);
         },
         setMoviesLocal: function (movies) {
-            //if (localStorage.getItem("movies") === null) {
-            localStorage.setItem("movies", movies);
-            //}
+            if (localStorage.getItem("movies") === null) {
+                localStorage.setItem("movies", movies);
+            }
         },
         // Movies render template
         renderMovies: function (filter) {

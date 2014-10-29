@@ -10,6 +10,35 @@
 </head>
 
 <body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="#about">About</a>
+                </li>
+                <li><a href="#movies">Movies</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <a href="#" id="filter">Filter</a>
+    <div id="menu">
+        <ul>
+            <li><a href="#movies/genre/all">All</a>
+            </li>
+            <li><a href="#movies/genre/horror">Horror</a>
+            </li>
+            <li><a href="#movies/genre/crime">Crime</a>
+            </li>
+            <li><a href="#movies/genre/drama">Drama</a>
+            </li>
+            <li><a href="#movies/genre/thriller">Thriller</a>
+            </li>
+            <li><a href="#movies/genre/action">Action</a>
+            </li>
+            <li><a href="#movies/genre/adventure">Adventure</a>
+            </li>
+        </ul>
+    </div>
     <main>
         <div id="loader">
             <div id="ball1"></div>
@@ -33,16 +62,6 @@
             <li><a href="#movies/genre/adventure">Adventure</a>
             </li>
         </ul>
-        <header>
-            <nav>
-                <ul>
-                    <li><a href="#about">About</a>
-                    </li>
-                    <li><a href="#movies">Movies</a>
-                    </li>
-                </ul>
-            </nav>
-        </header>
         <section data-route="about">
             <h1 data-bind="title"></h1>
             <p data-bind="description"></p>
@@ -78,6 +97,7 @@
     <script src="static/js/vendor/transparency.min.js"></script>
     <script src="static/js/vendor/routie.min.js"></script>
     <script src="static/js/vendor/underscore.min.js"></script>
+    <script src="static/js/vendor/snap.min.js"></script>
     <script src="static/js/vendor/hammer.min.js"></script>
     <script src="static/js/app.js"></script>
 </body>

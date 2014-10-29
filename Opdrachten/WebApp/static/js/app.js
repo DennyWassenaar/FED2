@@ -36,11 +36,23 @@ var movieAPI = "http://dennistel.nl/movies";
             WebApp.sections.init();
             var gestureElement = document.getElementById("gesture");
             var mc = new Hammer(gestureElement);
-            mc.on("panleft panright tap press", function () {
-                var newLocations = gestureElement.querySelector("a").getAttribute("href");
+            mc.on("panright tap press", function () {
+                var newLocation = gestureElement.querySelector("a").getAttribute("href");
                 location.replace(newLocation);
             });
             document.getElementById("loader").style.display = "none";
+            var snapper = new Snap({
+                element: document.getElementById("menu"),
+                disable: "right"
+            });
+            var menuButton = document.getElementById("filter");
+            menuButton.addEventListener("click", function () {
+                if (snapper.state().state == "left") {
+                    snapper.close();
+                } else {
+                    snapper.open("left");
+                }
+            });
         }
     };
     // Router object

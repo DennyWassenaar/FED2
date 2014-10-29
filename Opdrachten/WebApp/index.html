@@ -48,15 +48,12 @@
             <p data-bind="description"></p>
         </section>
         <section data-route="movies">
-            <article>
+            <article id="gesture">
                 <h1 data-bind="title"> <time data-bind="release_date"></time></h1>
-                <p data-bind="simple_plot"></p>
-                <img src="" alt="" data-bind="bg">
-                <p data-bind="genres"></p>
                 <p data-bind="directors"><span data-bind="name"></span>
                 </p>
-                <p data-bind="actors"><span data-bind="actor_name"></span>
-                </p>
+                <p data-bind="simple_plot"></p>
+                <img src="" alt="" data-bind="bg">
                 <a href="#" data-bind="movie_link">Movie details</a>
                 <p data-bind="reviews">
                 </p>

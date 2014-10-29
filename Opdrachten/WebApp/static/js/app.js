@@ -32,9 +32,14 @@ var movieAPI = "http://dennistel.nl/movies";
     // Controller object
     WebApp.controller = {
         init: function () {
-            //WebApp.contents.init();
             WebApp.router.init();
             WebApp.sections.init();
+            var gestureElement = document.getElementById("gesture");
+            var mc = new Hammer(gestureElement);
+            mc.on("panleft panright tap press", function () {
+                var newLocations = gestureElement.querySelector("a").getAttribute("href");
+                location.replace(newLocation);
+            });
         }
     };
     // Router object
@@ -102,43 +107,43 @@ var movieAPI = "http://dennistel.nl/movies";
                 }, 0) / _.size(movie.reviews);
             });
             switch (filter) {
-                case "all":
-                    WebApp.sections.toggle("movies");
-                    break;
-                case "horror":
-                case "crime":
-                case "drama":
-                case "thriller":
-                case "action":
-                case "adventure":
-                    movies = _.filter(movies, function (movie) {
-                        filter = filter.charAt(0).toUpperCase() + filter.slice(1);
-                        return (_.contains(movie.genres, filter) === true);
-                    });
-                    break;
-                case "asc":
-                    movies = _.sortBy(movies, function (movie) {
-                        return movie.reviews;
-                    });
-                    break;
-                case "desc":
-                    movies = _.sortBy(movies, function (movie) {
-                        return movie.reviews * -1;
-                    });
-                    break;
-                case "date-asc":
-                    movies = _.sortBy(movies, function (movie) {
-                        return Date.parse(movie.release_date);
-                    });
-                    break;
-                case "date-desc":
-                    movies = _.sortBy(movies, function (movie) {
-                        return Date.parse(movie.release_date) * -1;
-                    });
-                    break;
-                default:
-                    console.log("No filter!");
-                    break;
+            case "all":
+                WebApp.sections.toggle("movies");
+                break;
+            case "horror":
+            case "crime":
+            case "drama":
+            case "thriller":
+            case "action":
+            case "adventure":
+                movies = _.filter(movies, function (movie) {
+                    filter = filter.charAt(0).toUpperCase() + filter.slice(1);
+                    return (_.contains(movie.genres, filter) === true);
+                });
+                break;
+            case "asc":
+                movies = _.sortBy(movies, function (movie) {
+                    return movie.reviews;
+                });
+                break;
+            case "desc":
+                movies = _.sortBy(movies, function (movie) {
+                    return movie.reviews * -1;
+                });
+                break;
+            case "date-asc":
+                movies = _.sortBy(movies, function (movie) {
+                    return Date.parse(movie.release_date);
+                });
+                break;
+            case "date-desc":
+                movies = _.sortBy(movies, function (movie) {
+                    return Date.parse(movie.release_date) * -1;
+                });
+                break;
+            default:
+                console.log("No filter!");
+                break;
             };
             // De template engine aansturen met wat waar moet en andere eigenschappen.
             var directives = {

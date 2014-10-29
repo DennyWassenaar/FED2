@@ -1,4 +1,5 @@
-body{ background:#eee; color:#fff; margin:0; padding:0;}
+@import url(http://fonts.googleapis.com/css?family=Lato:400,700,900);
+body{ background:#eee; color:#fff; font-family:'Lato', sans-serif; margin:0; padding:0;}
 *{ margin:0; padding:0;}
 ul{ list-style: none;}
 a{ text-decoration: none; color:#fff;}
@@ -18,7 +19,7 @@ main > header{ position: fixed; bottom: 0; left: 0; width: 100%; z-index: 999;}
 main > header nav{ width: 100%;}
 main > header nav ul{ display: flex; width: 100%; box-shadow: 3px 3px 10px #000;}
 main > header nav ul li{ width: 50%;}
-main > header nav ul li a{ display: block; text-align: center; font-size:130%; color: #fff; background: #328eff; border:1px #000 solid; padding: 10px;}
+main > header nav ul li a{ display: block; text-align: center; font-size:1.3em; color: #fff; background: #328eff; border:1px #000 solid; padding: 10px;}
 main > header nav ul li a:hover{ }
 
 main > ul{ display: flex; justify-content: space-around; border:1px #000 solid; border-radius: 5px; margin: 10px 0;}
@@ -27,8 +28,8 @@ main > ul li a{ display: block; font-size: 1.5em; padding: 10px 25px;}
 
 main section.active{ display: flex; flex-wrap: wrap; justify-content: space-around; height: 100%; opacity: 1; transition: height 0s, opacity 500ms ease-in;}
 main section.inactive{ overflow: hidden; height:0; opacity:0; transition: height 0s, opacity 500ms ease-out;}
-main section.active article{ position: relative; overflow: hidden; width: 29%; border:3px #000 solid; border-radius: 10px; margin: 10px 0; padding: 10px 10px 50px 230px;}
-main section[data-bind="movie-detail"] article{ background: #000; width:100%;}
+main section.active article{ position: relative; overflow: hidden; width: 29%; border:3px #000 solid; border-radius: 10px; margin: 10px 0; padding: 10px 10px 60px 230px;}
+main section.active[data-route="movie-detail"] article{ width:100%;}
 main section.active article h1{ position: relative; font-size: 1.5em; z-index: 998;}
 main section.active article h1 time{ font-size:0.6em;}
 main section.active article h1 time:before{ content: " (";}
@@ -36,75 +37,22 @@ main section.active article h1 time:after{ content: ")";}
 main section.active article em{ position: relative; z-index: 998;}
 main section.active article p{ position: relative; font-size:1em; z-index: 998;}
 main section.active article p[data-bind="reviews"]{ position: absolute; left: 0; top:0; display: block; background: #000; color:#d5aa4f; border-radius: 0 0 10px 0; font-size: 3em; padding: 0 8px;}
+main section.active article p[data-bind="directors"]{ font-weight: bold; margin:10px 0;}
 main section.active article a{ position: absolute; bottom: 0; left: 0; display: block; text-align: center; font-size: 1.2em; width: 100%; background: #000; padding: 10px; z-index: 998;}
 main section.active article img{ position: absolute; top:0; left:0; z-index: 997;}
 
-/* ---------------------------------------------------------------------- */
-/* Style for animation
-/* Careful when modifying this part
-/* ---------------------------------------------------------------------- */
-html, body{
-overflow: hidden;
-}
-#menuWrapper {
-position: absolute;
-background-color: #1c1a1b;
-height: 100%;
-width:250px;
-overflow: auto;
-}
-#bodyWrapper {
-position: absolute;
-background-color: #fdfcfb;
-height: 100%;
-width:100%;
-overflow: auto;
-box-shadow: 0 0 10px #2c2c2c;
-}
-.fix{
-overflow: auto;
-padding: 10px;
-}
-.opening{
-transition-duration: 0.2s;
--moz-transition-duration: 0.2s; /* Firefox 4 */
--webkit-transition-duration: 0.2s; /* Safari and Chrome */
--o-transition-duration: 0.2s; /* Opera */
-transform: translate3d( 250px,0,0);
--webkit-transform: translate3d( 250px,0,0); /* Safari and Chrome */
--moz-transform: translate3d( 250px,0,0); /* Firefox */
-}
-.closing{
-transition-duration: 0.2s;
--moz-transition-duration: 0.2s; /* Firefox 4 */
--webkit-transition-duration: 0.2s; /* Safari and Chrome */
--o-transition-duration: 0.2s; /* Opera */
-transform: translate3d( 0,0,0);
--webkit-transform: translate3d( 0,0,0); /* Safari and Chrome */
--moz-transform: translate3d( 0,0,0); /* Firefox */
-}
-.qclosing{
-transform: translate3d( 0,0,0);
--webkit-transform: translate3d( 0,0,0); /* Safari and Chrome */
--moz-transform: translate3d( 0,0,0); /* Firefox */
-}
-#menuWrapper {
-position: absolute;
-background-color: #1c1a1b;
-height: 100%;
-width:250px;
-overflow: auto;
-}
-
 @media all and (max-width: 600px) {
-    main{ margin:0;  border-radius: 0;}
+    main{ margin:0 0 90px 0;  border-radius: 0;}
     main > header nav ul{ flex-flow: column;}
     main > header nav ul li{ width: 100%;}
-    main > header nav ul li a{ }
+    main > header nav ul li a{ font-size:1.1em; padding: 6px;}
     
     main > ul{ flex-flow: column;}
     main > ul li{text-align: center;}
     
-    main section.active article{ width:100%; padding: 10px;}
-    main section.active article p[data-bind="simple_plot"]{ display: none;}
+    main section.active article{ width:100%; padding: 10px 10px 50px 10px;}
+    main section.active article h1{ padding: 0 0 0 50px;}
+    main section.active article img{ display: none;}
+    main section.active article p[data-bind="simple_plot"]{ }
+    main section.active article p[data-bind="reviews"]{ font-size:1em;}
 }

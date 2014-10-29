@@ -40,6 +40,7 @@ var movieAPI = "http://dennistel.nl/movies";
                 var newLocations = gestureElement.querySelector("a").getAttribute("href");
                 location.replace(newLocation);
             });
+            document.getElementById("loader").style.display = "none";
         }
     };
     // Router object
